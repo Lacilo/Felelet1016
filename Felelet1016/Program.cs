@@ -221,8 +221,6 @@ namespace Felelet1016
                                                   
             }
 
-            Console.WriteLine(SzotagSzam("Alma"));
-
             char AbcbenLeghatsoBetu(string szo) 
             {
                 string abc = "aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz";
