@@ -1,6 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +32,10 @@ namespace Felelet1016
             int max = tomb[0];
             int maxMinIndex = 0;
             bool talaltMax = false;
+            string[] szoTomb = { "alma", "fa", "víz", "tenger", "nap", "fény", "könyv", "lap", "asztal", "szék", "toll", "papír", "hegy", "völgy", "kutya", "macska", "autó", "kerék", "ablak", "ajtó" };
+            Random rndSz = new Random();
+            List<char> mondat = new List<char>();
+            string jSzo = "";
 
             for (int i = 0; i < 20; i++)
             {
@@ -168,11 +175,101 @@ namespace Felelet1016
                 Console.Write(szam + ", ");
             }
 
-            // ---------------------------------------------------
+            // ---------------------------------------------------            
 
-            string[] szoTomb = new string[20];
+            Console.WriteLine();
 
+            for (int i = 0; i < 3; i++)
+            {
+                jSzo = szoTomb[rnd.Next(szoTomb.Length)];
 
+                foreach (char c in jSzo)
+                {
+                    mondat.Add(c);
+                }
+
+                if (i != 2) { 
+                    mondat.Add(' ');
+                }
+            }           
+
+            mondat[0] = char.ToUpper(mondat[0]);
+
+            foreach (char c in mondat)
+            {
+                Console.Write(c);
+            }
+
+            mondat.Add('.');
+            Console.WriteLine(mondat[mondat.Count - 1]);
+
+            string abcSzo = "";
+            
+
+            foreach (char c in mondat)
+            {
+                if (c == ' ' || c == '.')
+                {
+                    Console.WriteLine("A(z) " + abcSzo + " abc-ben leghátrébb lévő karaktere a(z) " + AbcbenLeghatsoBetu(abcSzo));
+                    Console.WriteLine("A(z) " + abcSzo + " szóban " + SzotagSzam(abcSzo) + " szótag található\n");
+
+                    abcSzo = "";                    
+                }
+                else {
+                    abcSzo += c; 
+                }
+                                                  
+            }
+
+            Console.WriteLine(SzotagSzam("Alma"));
+
+            char AbcbenLeghatsoBetu(string szo) 
+            {
+                string abc = "aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz";
+                int lHatsoBi = 0;
+
+                foreach (var cAbc in szo)
+                {
+                    if (lHatsoBi < abc.IndexOf(cAbc))
+                    {
+                        lHatsoBi = abc.IndexOf(cAbc);
+                    }
+                }                
+
+                return abc[lHatsoBi];
+            }        
+            
+            int SzotagSzam(string szo) 
+            {
+                string mgh = "aáeéiíoóöőuúüűAÁEÉIÍOÓÖŐUÚÜŰ";
+                int szotagSz = 0;
+                int szotagIndex = 0;
+                bool talalt = false;
+
+                foreach (char c in szo)
+                {
+                    szotagIndex = 0;
+
+                    while (szotagIndex < mgh.Length && !talalt)
+                    {
+                        if (c == mgh[szotagIndex])
+                        {
+                            talalt = true;
+                        }
+
+                        szotagIndex++;
+                    }
+
+                    if (talalt)
+                    {
+                        szotagSz++;
+
+                        talalt = false;
+                    }
+                }              
+
+                return szotagSz;
+            }
 
         }
     }
